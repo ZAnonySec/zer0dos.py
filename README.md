@@ -24,29 +24,31 @@ python Zer0Dos.py --scan-ports -d example.com
 
 . python3 zer0dos.py -d example.com -p 8080 -t 10 -s 0.1 -T 200
 
-# Features and Strengths:
+ Features and Strengths:
 
-# Port Scanning: Scans for open ports ;)
+ Port Scanning: Scans for open ports ;)
 
-# DDoS Simulation: Simulates Distributed Denial of Service (DDoS) attacks to stress-test network infrastructure.
+# Features this ddos tool have
 
-# Threaded Attack: Utilizes multiple threads (-T option) to maximize attack efficiency and intensity.
+ DDoS Simulation: Simulates Distributed Denial of Service (DDoS) attacks to stress-test network infrastructure.
 
-# Customizable Parameters: Allows customization of target (-d), port (-p), timeout (-t), sleep interval (-s), and number of threads (-T).
+ Threaded Attack: Utilizes multiple threads (-T option) to maximize attack efficiency and intensity.
 
-# Built-in Ping Monitoring: Incorporates live ping monitoring to track target responsiveness during the attack.
+ Customizable Parameters: Allows customization of target (-d), port (-p), timeout (-t), sleep interval (-s), and number of threads (-T).
 
-# Data Transfer Monitoring: Monitors data transfer metrics (e.g., MB sent) during the attack to gauge impact on network traffic.
+ Built-in Ping Monitoring: Incorporates live ping monitoring to track target responsiveness during the attack.
 
-# Dynamic User-Agent Support: Randomly selects user-agents from a file (ua.txt) for diverse request headers.
+ Data Transfer Monitoring: Monitors data transfer metrics (e.g., MB sent) during the attack to gauge impact on network traffic.
 
-# Cross-platform Compatibility: Works on Windows and Unix-like operating systems (Linux, macOS).
+ Dynamic User-Agent Support: Randomly selects user-agents from a file (ua.txt) for diverse request headers.
 
-# Dependency on Ping3 Library: Utilizes the ping3 library for ICMP ping functionality.
+ Cross-platform Compatibility: Works on Windows and Unix-like operating systems (Linux, macOS).
 
-# Informative Output: Provides detailed output during the attack, including ping times and data transfer statistics.
+ Dependency on Ping3 Library: Utilizes the ping3 library for ICMP ping functionality.
 
-# Flexible Attack Methods: Supports both HTTP GET and POST methods for varied attack scenarios.
+ Informative Output: Provides detailed output during the attack, including ping times and data transfer statistics.
+
+ Flexible Attack Methods: Supports both HTTP GET and POST methods for varied attack scenarios.
 
 
 ![22](https://github.com/user-attachments/assets/ab5a063f-a227-474b-9b6b-05e544d88ffa)

